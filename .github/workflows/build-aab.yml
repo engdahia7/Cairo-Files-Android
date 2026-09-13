@@ -21,27 +21,18 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Generate Keystore
+      - name: Decode keystore
         run: |
-          keytool -genkeypair \
-          -v \
-          -keystore upload-key.jks \
-          -alias cairo-upload \
-          -keyalg RSA \
-          -keysize 2048 \
-          -validity 10000 \
-          -storepass CairoPlay@2026 \
-          -keypass CairoKey@2026 \
-          -dname "CN=Cairo Files, OU=Android, O=Cairo, L=Riyadh, ST=Riyadh, C=SA"
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > upload-key.jks
 
       - name: Build Release AAB
         run: |
           chmod +x ./gradlew
           ./gradlew bundleRelease \
           -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/upload-key.jks \
-          -Pandroid.injected.signing.store.password=CairoPlay@2026 \
-          -Pandroid.injected.signing.key.alias=cairo-upload \
-          -Pandroid.injected.signing.key.password=CairoKey@2026
+          -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
+          -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
+          -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
 
       - name: Upload AAB
         uses: actions/upload-artifact@v4
