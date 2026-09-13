@@ -14,10 +14,16 @@ data class NotebookEntry(
 )
 
 enum class NotebookEntryCategory(val label: String, val iconEmoji: String) {
+    ALL("الكل", "📒"),
     CLUE("دليل", "🔎"),
     SUSPECT("مشتبه", "👤"),
     EVIDENCE("أحراز", "📁"),
-    NOTE("ملاحظة", "📝")
+    NOTE("ملاحظة", "📝"),
+    CLUES("أدلة", "🔎"),
+    CONTRADICTIONS("تناقضات", "⚠️"),
+    FORENSIC("جنائي", "🧪"),
+    PERSONAL("شخصي", "📝"),
+    INTERROGATION("استجواب", "🗣️")
 }
 
 data class ForensicExamTarget(
@@ -74,16 +80,7 @@ data class CairoGazetteEdition(
 )
 
 
-enum class NotebookCategory(
-    val label: String,
-    val iconEmoji: String
-) {
-    ALL("الكل", "📒"),
-    CLUES("أدلة", "🔎"),
-    CONTRADICTIONS("تناقضات", "⚠️"),
-    FORENSIC("جنائي", "🧪"),
-    PERSONAL("شخصي", "📝")
-}
+typealias NotebookCategory = NotebookEntryCategory
 
 enum class ForensicToolType(
     val label: String,
