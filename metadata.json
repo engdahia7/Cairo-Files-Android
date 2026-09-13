@@ -1,0 +1,6 @@
+{
+  "name": "ملفات القاهرة",
+  "description": "لعبة تحقيق جنائية مصرية تفاعلية ضخمة - قضايا، أدلة، استجواب، ولوحة تحقيق في شوارع القاهرة",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

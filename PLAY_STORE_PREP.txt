@@ -1,0 +1,13 @@
+Cairo Files - Play Store preparation
+
+Project structure cleaned:
+- Android Gradle project ready for Android Studio
+- Test folders removed
+- Environment example removed
+- Release configuration kept
+
+Before uploading:
+1. Change applicationId from com.aistudio.cairofiles.wqpxyt to your final package name if needed.
+2. Add your release keystore.
+3. Build signed AAB (not APK) for Google Play.
+4. Add store listing assets (icon, screenshots, description).

@@ -1,0 +1,50 @@
+name: Build Signed Android App Bundle
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Generate Keystore
+        run: |
+          keytool -genkeypair \
+          -v \
+          -keystore upload-key.jks \
+          -alias cairo-upload \
+          -keyalg RSA \
+          -keysize 2048 \
+          -validity 10000 \
+          -storepass CairoPlay@2026 \
+          -keypass CairoKey@2026 \
+          -dname "CN=Cairo Files, OU=Android, O=Cairo, L=Riyadh, ST=Riyadh, C=SA"
+
+      - name: Build Release AAB
+        run: |
+          chmod +x ./gradlew
+          ./gradlew bundleRelease \
+          -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/upload-key.jks \
+          -Pandroid.injected.signing.store.password=CairoPlay@2026 \
+          -Pandroid.injected.signing.key.alias=cairo-upload \
+          -Pandroid.injected.signing.key.password=CairoKey@2026
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: cairo-files-release-aab
+          path: app/build/outputs/bundle/release/*.aab
